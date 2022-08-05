@@ -1,4 +1,4 @@
-package com.example.overlayscreen
+package com.example.overlayscreen.service
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -10,14 +10,14 @@ import android.view.*
 import com.example.overlayscreen.databinding.FloatingLayoutBinding
 
 
-class FloatingWindowApp : Service() {
-    lateinit var floatWindowLayoutParam:WindowManager.LayoutParams
-    var LAYOUT_TYPE : Int? = null
+class FloatingWindowService : Service() {
+    lateinit var floatWindowLayoutParam: WindowManager.LayoutParams
+    private var LAYOUT_TYPE: Int? = null
     lateinit var windowManager: WindowManager
-    lateinit var binding : FloatingLayoutBinding
+    lateinit var binding: FloatingLayoutBinding
 
     override fun onBind(p0: Intent?): IBinder? {
-          return null
+        return null
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -41,8 +41,9 @@ class FloatingWindowApp : Service() {
             WindowManager.LayoutParams.TYPE_TOAST
         }
 
+        //set the size of floating screen to half width and full height
         floatWindowLayoutParam = WindowManager.LayoutParams(
-            (width * 0.50f).toInt(), (height * 0.50f).toInt(),
+            (width * 0.50f).toInt(), (height * 1.00f).toInt(),
             LAYOUT_TYPE!!,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
             PixelFormat.TRANSLUCENT
@@ -54,22 +55,20 @@ class FloatingWindowApp : Service() {
 
         windowManager.addView(binding.root, floatWindowLayoutParam)
 
+
+/*
+Stop FloatingWindow Service and close the window
+ */
         binding.close.setOnClickListener {
             stopSelf()
 
             windowManager.removeView(binding.root)
 
-
-            val backToHome = Intent(this@FloatingWindowApp, MainActivity::class.java)
-
-
-            backToHome.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(backToHome)
         }
 
-
-
-
+        /*
+        Drag floating screens to anywhere on main screen
+         */
         binding.root.setOnTouchListener(object : View.OnTouchListener {
             val floatWindowLayoutUpdateParam: WindowManager.LayoutParams = floatWindowLayoutParam
             var x = 0.0
@@ -103,7 +102,7 @@ class FloatingWindowApp : Service() {
     override fun onDestroy() {
         super.onDestroy()
         stopSelf()
-        // Window is removed from the screen
+        // Window is removed from the screen at onDestroy()
         windowManager.removeView(binding.root)
     }
 

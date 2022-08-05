@@ -1,4 +1,4 @@
-package com.example.overlayscreen
+package com.example.overlayscreen.ui
 
 import android.app.ActivityManager
 import android.content.Context
@@ -10,25 +10,26 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.example.overlayscreen.service.FloatingWindowService
 import com.example.overlayscreen.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
-  private lateinit var dialog: AlertDialog
-  lateinit var binding : ActivityMainBinding
+    private lateinit var dialog: AlertDialog
+    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (isServiceRunning()){
-            stopService(Intent(this@MainActivity,FloatingWindowApp::class.java))
+        if (isServiceRunning()) {
+            stopService(Intent(this@MainActivity, FloatingWindowService::class.java))
         }
         binding.launchLink.setOnClickListener {
-            if(checkOverlayDisplayPermission()){
-                startService(Intent(this@MainActivity,FloatingWindowApp::class.java))
-            }else{
+            if (checkOverlayDisplayPermission()) {
+                startService(Intent(this@MainActivity, FloatingWindowService::class.java))
+            } else {
                 requestOverlayDisplayPermission()
             }
         }
@@ -38,15 +39,16 @@ class MainActivity : AppCompatActivity() {
 
     //for checking FloatingWindowService is running  or not
 
-   private fun isServiceRunning():Boolean {
+    private fun isServiceRunning(): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (FloatingWindowApp::class.java.name == service.service.className)
+            if (FloatingWindowService::class.java.name == service.service.className)
                 return true
         }
         return false
     }
 
+    //for requesting overlay permission
     private fun requestOverlayDisplayPermission() {
         val builder = AlertDialog.Builder(this)
 
@@ -56,7 +58,9 @@ class MainActivity : AppCompatActivity() {
 
         builder.setMessage("Enable 'Display over other apps' from System Settings.")
 
-        builder.setPositiveButton("Open Settings", DialogInterface.OnClickListener { dialog, which ->
+        builder.setPositiveButton(
+            "Open Settings",
+            DialogInterface.OnClickListener { dialog, which ->
 
                 val intent = Intent(
                     Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
@@ -71,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    //checking for overlay permission
     private fun checkOverlayDisplayPermission(): Boolean {
 
         return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
