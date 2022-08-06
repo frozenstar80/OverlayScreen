@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.overlayscreen">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -17,18 +16,49 @@
         android:theme="@style/Theme.OverlayScreen"
         tools:targetApi="31">
         <activity
+            android:name=".ui.ServiceActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:theme="@style/Theme.Transparent">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.example1.com"
+                    android:scheme="http" />
+                <data
+                    android:host="www.example1.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
-            <intent-filter>
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="www.example.com"
+                    android:scheme="http" />
+                <data
+                    android:host="www.example.com"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
-        
-        <service android:name=".service.FloatingWindowService"
+
+        <service
+            android:name=".service.FloatingWindowService"
             tools:ignore="Instantiatable" />
     </application>
-    
 
 </manifest>

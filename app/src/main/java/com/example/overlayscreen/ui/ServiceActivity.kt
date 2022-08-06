@@ -6,35 +6,29 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.example.overlayscreen.R
 import com.example.overlayscreen.service.FloatingWindowService
-import com.example.overlayscreen.databinding.ActivityMainBinding
 
-
-class MainActivity : AppCompatActivity() {
+class ServiceActivity : AppCompatActivity() {
     private lateinit var dialog: AlertDialog
-    lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_service)
 
         if (isServiceRunning()) {
-            stopService(Intent(this@MainActivity, FloatingWindowService::class.java))
+            stopService(Intent(this, FloatingWindowService::class.java))
         }
-        binding.launchLink.setOnClickListener {
+
             if (checkOverlayDisplayPermission()) {
-                startService(Intent(this@MainActivity, FloatingWindowService::class.java))
+                startService(Intent(this, FloatingWindowService::class.java))
             } else {
                 requestOverlayDisplayPermission()
             }
-        }
-
 
     }
 

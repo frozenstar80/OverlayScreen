@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "102165491802",
+    "project_id": "overlayscreen",
+    "storage_bucket": "overlayscreen.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102165491802:android:be78510b0ed74b2c0ba863",
+        "android_client_info": {
+          "package_name": "com.example.overlayscreen"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "102165491802-o6b722rkjvjib0216s781qiqdbej5e81.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBeyWV1eZ5HXhwUdbV4x_8izCTxKasxuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "102165491802-o6b722rkjvjib0216s781qiqdbej5e81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
